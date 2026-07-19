@@ -1,6 +1,6 @@
-[submodule "herdr"]
-	path = herdr
-	url = git@github.com:ogulcancelik/herdr.git
 [submodule "nvim-tmux-navigation"]
 	path = nvim-tmux-navigation
 	url = git@github.com:alexghergh/nvim-tmux-navigation.git
+[submodule "herdr"]
+	path = herdr
+	url = git@github.com:ogulcancelik/herdr.git
