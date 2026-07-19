@@ -1,0 +1,30 @@
+id = "local.vim-navigator"
+name = "Vim Navigator"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Vim-aware Herdr pane navigation for ctrl+h/j/k/l."
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "left"
+title = "Navigate left"
+contexts = ["pane"]
+command = ["bin/herdr-vim-navigator", "left"]
+
+[[actions]]
+id = "down"
+title = "Navigate down"
+contexts = ["pane"]
+command = ["bin/herdr-vim-navigator", "down"]
+
+[[actions]]
+id = "up"
+title = "Navigate up"
+contexts = ["pane"]
+command = ["bin/herdr-vim-navigator", "up"]
+
+[[actions]]
+id = "right"
+title = "Navigate right"
+contexts = ["pane"]
+command = ["bin/herdr-vim-navigator", "right"]

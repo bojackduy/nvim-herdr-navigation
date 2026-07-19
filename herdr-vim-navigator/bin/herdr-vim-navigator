@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -u
+
+usage() {
+  printf 'usage: herdr-vim-navigator left|down|up|right\n' >&2
+}
+
+direction=${1:-}
+case "$direction" in
+  left) key="ctrl+h" ;;
+  down) key="ctrl+j" ;;
+  up) key="ctrl+k" ;;
+  right) key="ctrl+l" ;;
+  *) usage; exit 2 ;;
+esac
+
+herdr_bin=${HERDR_BIN_PATH:-herdr}
+pane_id=${HERDR_PANE_ID:-}
+
+if [ -z "$pane_id" ]; then
+  exec "$herdr_bin" pane focus --direction "$direction" --current
+fi
+
+vim_process_pattern=${HERDR_VIM_NAVIGATOR_PATTERN:-'([^"[:space:]]+/)?g?\.?(view|l?n?vim?x?|fzf)(diff)?(-wrapped)?'}
+
+is_vim_process() {
+  grep -Eiq -- '"name"[[:space:]]*:[[:space:]]*"'"$vim_process_pattern"'"'
+}
+
+process_info=$("$herdr_bin" pane process-info --pane "$pane_id" 2>/dev/null || true)
+
+if printf '%s\n' "$process_info" | is_vim_process; then
+  exec "$herdr_bin" pane send-keys "$pane_id" "$key"
+fi
+
+exec "$herdr_bin" pane focus --direction "$direction" --pane "$pane_id"
