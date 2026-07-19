@@ -1,19 +1,31 @@
 # herdr-vim-navigator
 
-Herdr-side half of Vim-aware pane navigation. It mirrors the tmux side of
-`vim-tmux-navigator`: Herdr receives `ctrl+h/j/k/l`, detects whether the focused
-pane is Vim/Neovim, and either forwards the key into that pane or moves Herdr
-focus.
+Herdr-side plugin for seamless `ctrl+h/j/k/l` navigation between Herdr panes and
+Vim or Neovim splits. It mirrors the tmux side of `vim-tmux-navigator`: Herdr
+receives the key, detects whether the focused pane is Vim or Neovim, and either
+forwards the key into that pane or moves Herdr focus.
 
-This plugin does not modify Herdr. It exposes plugin actions that you bind in
-`~/.config/herdr/config.toml`.
+Pair this with the Neovim plugin in `../nvim-herdr-navigation`.
 
 ## Install
 
-From this repository:
+Install directly from GitHub:
 
 ```sh
-herdr plugin link ./herdr-vim-navigator
+herdr plugin install bojackduy/nvim-herdr-navigation/herdr-vim-navigator
+```
+
+Or link a local clone:
+
+```sh
+git clone https://github.com/bojackduy/nvim-herdr-navigation.git ~/.local/share/nvim-herdr-navigation
+herdr plugin link ~/.local/share/nvim-herdr-navigation/herdr-vim-navigator
+```
+
+Verify installation:
+
+```sh
+herdr plugin list
 ```
 
 ## Configure Herdr
@@ -71,11 +83,13 @@ The default process-name pattern is based on `vim-tmux-navigator`:
 ([^"[:space:]]+/)?g?\.?(view|l?n?vim?x?|fzf)(diff)?(-wrapped)?
 ```
 
-Override it for unusual wrappers:
+Override it before launching Herdr if you use unusual Vim or Neovim wrappers:
 
 ```sh
 HERDR_VIM_NAVIGATOR_PATTERN='([^"[:space:]]+/)?(nvim|vim|my-vim-wrapper)' herdr
 ```
 
-Set `HERDR_VIM_NAVIGATOR_PATTERN` in the environment before launching Herdr if
-you need a custom pattern.
+## Keywords
+
+Herdr Vim navigator, Herdr Neovim navigation, vim-tmux-navigator for Herdr,
+Ctrl h j k l pane navigation, Herdr plugin action navigation.
