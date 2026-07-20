@@ -1,11 +1,10 @@
-# nvim-herdr-navigation: Herdr Neovim Navigator
+# Herdr Neovim Navigator (nvim-herdr-navigation)
 
-Seamless `ctrl+h/j/k/l` navigation between Herdr panes and Neovim splits.
+`nvim-herdr-navigation` is a `vim-tmux-navigator` alternative for Herdr: seamless
+`ctrl+h/j/k/l` navigation between Neovim splits and Herdr panes.
 
-`nvim-herdr-navigation` is a `vim-tmux-navigator` style workflow for the
-[Herdr](https://github.com/ogulcancelik/herdr) terminal workspace manager and
-Neovim. Use one set of Vim keys to move across Neovim windows first, then Herdr
-panes when you reach the edge.
+Use the same Vim navigation keys everywhere. Move across Neovim windows first;
+when you reach a split edge, jump to the neighboring Herdr pane.
 
 ```text
 ctrl+h  move left
@@ -14,70 +13,29 @@ ctrl+k  move up
 ctrl+l  move right
 ```
 
-## Why Use This
+## Install Herdr Neovim Navigation
 
-Use this plugin if you searched for any of these:
-
-- Herdr Neovim navigation
-- vim-tmux-navigator for Herdr
-- Neovim split navigation with Herdr panes
-- Ctrl-h Ctrl-j Ctrl-k Ctrl-l pane navigation
-- LazyVim Herdr navigation mappings
-- terminal multiplexer navigation for Neovim
-
-The goal is simple: make Neovim splits and Herdr panes feel like one navigation
-surface.
-
-## What Is Included
-
-This repository contains two plugins that work together:
-
-- `herdr-vim-navigator/`: Herdr plugin actions for `ctrl+h/j/k/l`. Herdr receives
-  the key first, detects Vim or Neovim panes, and either forwards the key into
-  Neovim or moves Herdr pane focus directly.
-- `nvim-herdr-navigation/`: Neovim plugin. Neovim tries normal split navigation
-  first. If focus is already at the requested split edge, it calls Herdr to move
-  to the neighboring pane.
-
-The `herdr/` and `nvim-tmux-navigation/` directories are reference submodules.
-They are not required at runtime and are not modified by this project.
-
-## Requirements
-
-- Herdr `0.7.0` or newer
-- Neovim `0.8` or newer
-- `herdr` available on `$PATH` inside Neovim
-- A plugin manager such as `lazy.nvim` for the Neovim side
-
-## Download and Install
+This project has two parts. Install both for full Neovim split and Herdr pane
+navigation.
 
 ### 1. Install the Herdr Plugin
-
-Install directly from GitHub:
 
 ```sh
 herdr plugin install bojackduy/nvim-herdr-navigation/herdr-vim-navigator
 ```
 
-Or clone the repository and link it locally:
-
-```sh
-git clone https://github.com/bojackduy/nvim-herdr-navigation.git ~/.local/share/nvim-herdr-navigation
-herdr plugin link ~/.local/share/nvim-herdr-navigation/herdr-vim-navigator
-```
-
-Verify the plugin is installed:
+Verify Herdr can see the plugin:
 
 ```sh
 herdr plugin list
 ```
 
-### 2. Configure Herdr Keybindings
+### 2. Configure Herdr ctrl+h/j/k/l Keybindings
 
 Edit `~/.config/herdr/config.toml`.
 
-Disable Herdr's built-in direct pane focus bindings. This is required because
-the Vim-aware plugin must receive `ctrl+h/j/k/l` first:
+Disable Herdr's built-in direct pane focus bindings. The Vim-aware plugin must
+receive these keys first:
 
 ```toml
 [keys]
@@ -87,7 +45,7 @@ focus_pane_up = ""
 focus_pane_right = ""
 ```
 
-Bind the same keys to the Herdr plugin actions:
+Bind `ctrl+h/j/k/l` to the Herdr plugin actions:
 
 ```toml
 [[keys.command]]
@@ -123,7 +81,7 @@ herdr server reload-config
 
 ### 3. Install the Neovim Plugin with lazy.nvim
 
-Add this to your lazy.nvim plugin specs:
+Add this lazy.nvim spec:
 
 ```lua
 return {
@@ -151,20 +109,19 @@ return {
 }
 ```
 
-Why this spec matters:
+Important details for lazy.nvim and LazyVim users:
 
-- `submodules = false` avoids cloning the reference submodules, which are not
-  needed by the plugin.
-- `init` adds the nested `nvim-herdr-navigation/` plugin directory to Neovim's
-  runtime path.
-- `event = "VeryLazy"` plus `vim.schedule()` lets these mappings override
-  LazyVim's default `<C-h/j/k/l>` window mappings inside Herdr.
-- `cond` keeps the plugin inactive outside Herdr.
+- `submodules = false` prevents lazy.nvim from cloning development-only reference
+  submodules.
+- `init` adds the nested Neovim plugin directory to the runtime path.
+- `event = "VeryLazy"` plus `vim.schedule()` lets this plugin override LazyVim's
+  default `<C-h/j/k/l>` window mappings inside Herdr.
+- `cond` keeps this Neovim plugin disabled outside Herdr.
 
 ### 4. Keep vim-tmux-navigator Outside Herdr
 
-If you use `christoomey/vim-tmux-navigator`, keep it disabled inside Herdr so it
-does not own the same keys:
+If you already use `christoomey/vim-tmux-navigator`, keep it active outside Herdr
+and disabled inside Herdr:
 
 ```lua
 return {
@@ -175,7 +132,48 @@ return {
 }
 ```
 
-## Test It
+## Features
+
+- `vim-tmux-navigator` style navigation for Herdr and Neovim.
+- One set of `ctrl+h/j/k/l` keys for Neovim splits and Herdr panes.
+- Neovim-first behavior: move between splits before falling back to Herdr.
+- Herdr-aware behavior: shell, agent, and non-Neovim panes move directly through Herdr.
+- LazyVim-compatible mapping setup for default `<C-h/j/k/l>` window keymaps.
+- Works alongside tmux navigation by loading `vim-tmux-navigator` only outside Herdr.
+- No Herdr core patches required.
+
+## When to Use This Plugin
+
+Use `nvim-herdr-navigation` if you want:
+
+- Herdr pane navigation from Neovim.
+- Neovim split navigation that falls back to Herdr at split edges.
+- A Herdr equivalent of `vim-tmux-navigator`.
+- LazyVim `ctrl+h/j/k/l` navigation that works across Herdr panes.
+- A terminal multiplexer navigation workflow for Herdr, Vim, and Neovim.
+
+## Repository Layout
+
+This repository contains two plugins that work together:
+
+- `herdr-vim-navigator/`: Herdr plugin actions for `ctrl+h/j/k/l`. Herdr receives
+  the key first, detects Vim or Neovim panes, and either forwards the key into
+  Neovim or moves Herdr pane focus directly.
+- `nvim-herdr-navigation/`: Neovim plugin. Neovim tries normal split navigation
+  first. If focus is already at the requested split edge, it calls Herdr to move
+  to the neighboring pane.
+
+The `herdr/` and `nvim-tmux-navigation/` directories are reference submodules.
+They are not required at runtime.
+
+## Requirements
+
+- Herdr `0.7.0` or newer
+- Neovim `0.8` or newer
+- `herdr` available on `$PATH` inside Neovim
+- `lazy.nvim` or another Neovim plugin manager
+
+## Test Neovim Split and Herdr Pane Navigation
 
 Start Herdr, open a pane running Neovim, and create a few Neovim splits:
 
@@ -192,7 +190,7 @@ Expected behavior:
 - Outside Herdr, your existing tmux navigator or normal Neovim mappings can keep
   working.
 
-## How It Works
+## How Herdr Neovim Navigation Works
 
 This follows the two-sided design popularized by `vim-tmux-navigator`:
 
@@ -232,9 +230,9 @@ That creates:
 :TmuxNavigateRight
 ```
 
-## Troubleshooting
+## Troubleshooting Herdr and Neovim Navigation
 
-### Lazy.nvim Fails Cloning Submodules
+### lazy.nvim Fails Cloning Submodules
 
 Use `submodules = false` in the lazy.nvim spec. The repository includes reference
 submodules for development, but the Neovim plugin does not need them.
@@ -291,6 +289,36 @@ wrapper:
 HERDR_VIM_NAVIGATOR_PATTERN='([^"[:space:]]+/)?(nvim|vim|my-vim-wrapper)' herdr
 ```
 
+## FAQ
+
+### Is this vim-tmux-navigator for Herdr?
+
+Yes. `nvim-herdr-navigation` provides the same style of pane-aware Vim navigation
+for Herdr that `vim-tmux-navigator` provides for tmux.
+
+### How do I move from a Neovim split to a Herdr pane?
+
+Press `ctrl+h/j/k/l` at the edge of the Neovim split layout. The Neovim plugin
+detects that focus did not move inside Neovim and asks Herdr to focus the
+neighboring pane.
+
+### Does this work with LazyVim?
+
+Yes. Use the lazy.nvim spec in this README. The `VeryLazy` event and
+`vim.schedule()` are included so the Herdr mappings win over LazyVim's default
+window-navigation mappings.
+
+### Can I keep using vim-tmux-navigator?
+
+Yes. Keep `vim-tmux-navigator` enabled outside Herdr and disabled inside Herdr
+with `cond = function() return vim.env.HERDR_PANE_ID == nil end`.
+
+### Does this work outside Herdr?
+
+The recommended lazy.nvim spec only loads the Neovim plugin when
+`HERDR_PANE_ID` exists. Outside Herdr, keep using your existing Neovim or tmux
+navigation setup.
+
 ## Related Tools
 
 - `vim-tmux-navigator`: the tmux and Vim workflow this project is inspired by.
@@ -298,9 +326,9 @@ HERDR_VIM_NAVIGATOR_PATTERN='([^"[:space:]]+/)?(nvim|vim|my-vim-wrapper)' herdr
   reference.
 - Herdr: the terminal workspace and pane manager this plugin targets.
 
-## Search Keywords
+## Discoverability
 
-Herdr Neovim navigation, nvim Herdr navigator, vim tmux navigator Herdr,
-vim-tmux-navigator alternative, Neovim pane navigation, Neovim split navigation,
-LazyVim Ctrl h j k l, Herdr plugin, terminal multiplexer navigation, Herdr pane
-focus from Neovim.
+This project is relevant for searches such as Herdr Neovim navigation,
+Herdr Neovim navigator, vim-tmux-navigator for Herdr, Neovim split navigation,
+Herdr pane navigation, LazyVim ctrl h j k l, terminal multiplexer navigation,
+and Neovim pane focus from Herdr.
