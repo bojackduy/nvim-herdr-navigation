@@ -1,5 +1,7 @@
 # Herdr Neovim Navigator (nvim-herdr-navigation)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 `nvim-herdr-navigation` is a `vim-tmux-navigator` alternative for Herdr: seamless
 `ctrl+h/j/k/l` navigation between Neovim splits and Herdr panes.
 
@@ -11,6 +13,16 @@ ctrl+h  move left
 ctrl+j  move down
 ctrl+k  move up
 ctrl+l  move right
+```
+
+## Demo
+
+![Herdr Neovim navigation demo](assets/demo.gif)
+
+Prefer terminal playback? Use the asciinema recording:
+
+```sh
+asciinema play assets/demo.cast
 ```
 
 ## Install Herdr Neovim Navigation
@@ -325,6 +337,10 @@ navigation setup.
 - `nvim-tmux-navigation`: a Neovim-focused tmux navigation plugin used here as a
   reference.
 - Herdr: the terminal workspace and pane manager this plugin targets.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
 
 ## Discoverability
 
