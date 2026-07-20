@@ -291,39 +291,6 @@ wrapper:
 HERDR_VIM_NAVIGATOR_PATTERN='([^"[:space:]]+/)?(nvim|vim|my-vim-wrapper)' herdr
 ```
 
-## Local Development
-
-Clone without submodules unless you are working on the reference projects:
-
-```sh
-git clone https://github.com/bojackduy/nvim-herdr-navigation.git
-cd nvim-herdr-navigation
-```
-
-Link the Herdr plugin locally:
-
-```sh
-herdr plugin link ./herdr-vim-navigator
-```
-
-Use the local Neovim plugin directory:
-
-```lua
-{
-  dir = "/path/to/nvim-herdr-navigation/nvim-herdr-navigation",
-  config = function()
-    require("herdr-navigation").setup({
-      keybindings = {
-        left = "<C-h>",
-        down = "<C-j>",
-        up = "<C-k>",
-        right = "<C-l>",
-      },
-    })
-  end,
-}
-```
-
 ## Related Tools
 
 - `vim-tmux-navigator`: the tmux and Vim workflow this project is inspired by.
